@@ -1,3 +1,8 @@
+# Kimberlee Laloo (14062181)
+# AMLS Assignment
+# Electronic and Electrical Engineering
+# University College London
+
 import AMLS_assignment as l2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -27,7 +32,7 @@ tr_X, tr_Y, te_X, te_Y, names, allX, allY = get_data()
 def train_SVM(tr_X, tr_Y, te_X, te_Y):
 
     # Define the classification model
-    svclassifier = svm.SVC(kernel = 'sigmoid', gamma='auto')
+    svclassifier = svm.SVC(kernel='sigmoid')
 
     #Fit model
     svclassifier.fit(tr_X, tr_Y)
@@ -43,12 +48,17 @@ def train_SVM(tr_X, tr_Y, te_X, te_Y):
 
     return svclassifier, y_pred, score
 
-
-svcmodel, y_pred, accuracy = train_SVM(tr_X, tr_Y[:,4], te_X, te_Y[:,4])
+# Change the numerical values of the indices to correspond to different tasks:
+# 0 - hair-colour
+# 1 - glasses
+# 2 - emotions
+# 3 - age
+# 4 - human
+svcmodel, y_pred, accuracy = train_SVM(tr_X, tr_Y[:, 4], te_X, te_Y[:, 4])
 
 
 # Storing to .csv
-f = open(("humanSVM_4.csv"), "w+")
+f = open(("SVM_age_2.csv"), "w+")
 
 # Average inference accuracy
 f.write("%0.3f \r\n" % accuracy)
@@ -76,7 +86,7 @@ def train_MLP(tr_X, tr_Y, te_X, te_Y):
     tr_X, te_X, = scale_dat(tr_X, te_X)
 
     # Define the classification model
-    model = neural_network.MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(4, 2), random_state=1)
+    model = neural_network.MLPClassifier(solver='sgd', alpha=1e-5, hidden_layer_sizes=(4, 2), random_state=1)
 
     # Fit model
     model.fit(tr_X, tr_Y)
@@ -92,11 +102,16 @@ def train_MLP(tr_X, tr_Y, te_X, te_Y):
 
     return model, y_pred, score
 
-
+# Change the numerical values of the indices to correspond to different tasks:
+# 0 - hair-colour
+# 1 - glasses
+# 2 - emotions
+# 3 - age
+# 4 - human
 mlpmodel, y_pred, accuracy = train_MLP(tr_X, tr_Y[:, 4], te_X, te_Y[:, 4])
 
 # Storing to .csv
-f = open(("humanMLP_4.csv"), "w+")
+f = open(("MLP_hair-colour_5.csv"), "w+")
 
 # Average inference accuracy
 f.write("%0.3f \r\n" % accuracy)
@@ -104,6 +119,8 @@ f.write("%0.3f \r\n" % accuracy)
 # Predictions
 [f.write("%s, %d\r\n" % (str(int(names[i]))+'.png', y_pred[i])) for i in range(len(names))]
 f.close()
+
+# Obtaining the learning curve
 
 def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None,
                         n_jobs=None, train_sizes=np.linspace(.1, 1.0, 5)):

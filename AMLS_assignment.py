@@ -1,3 +1,8 @@
+# Kimberlee Laloo (14062181)
+# AMLS Assignment
+# Electronic and Electrical Engineering
+# University College London
+
 import os
 import numpy as np
 from keras.preprocessing import image
@@ -133,7 +138,7 @@ def extract_features_labels():
                 break
 
     landmark_features = np.array(all_features)
-    labels = (np.array(all_labels) + 1)/2 # simply converts the -1 into 0, so male=0 and female=1
+    labels = (np.array(all_labels) + 1)/2 # simply converts the -1 into 0, so false_feature=0 and true_feature=1
 
     print(labels)
     print(landmark_features)
@@ -141,6 +146,4 @@ def extract_features_labels():
     return landmark_features, labels, img_names
 
 
-# Classification with SVM
-# Implementing the SVM algorithm for binary classification
 
